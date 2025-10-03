@@ -1,0 +1,58 @@
+{
+  "name": "@crossera/sdk",
+  "version": "1.0.0",
+  "description": "Official SDK for CrossEra - CrossFi Reward System",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c -w",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "crossera",
+    "crossfi",
+    "blockchain",
+    "rewards",
+    "sdk",
+    "ethereum",
+    "defi"
+  ],
+  "author": "CrossEra Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crossera/crossera-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/crossera/crossera-sdk/issues"
+  },
+  "homepage": "https://crossera.vercel.app",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@types/node": "^20.0.0",
+    "rollup": "^4.0.0",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "type": "module"
+}
