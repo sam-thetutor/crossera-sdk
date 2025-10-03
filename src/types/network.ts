@@ -9,12 +9,12 @@ export interface NetworkConfig {
 export const NETWORK_CONFIGS: Record<Network, NetworkConfig> = {
   testnet: {
     baseUrl: 'https://crossera-testnet.vercel.app',
-    chainId: 1144,
+    chainId: 4157,
     name: 'CrossFi Testnet'
   },
   mainnet: {
     baseUrl: 'https://crossera.vercel.app',
-    chainId: 1144,
+    chainId: 4158,
     name: 'CrossFi Mainnet'
   }
 };
