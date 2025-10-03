@@ -44,10 +44,14 @@ export class CrossEraSDK {
 
     try {
       const response = await this.apiClient.getClient(network).get(
-        `/api/projects/address/${address}`
+        `/projects/register?owner=${address}`
       );
 
-      return response.data.appId || null;
+      // Extract app ID from the first project if any exist
+      if (response.data?.success && response.data?.projects?.length > 0) {
+        return response.data.projects[0].app_id || null;
+      }
+      return null;
     } catch (error: any) {
       if (error.status === 404) {
         return null;
@@ -80,7 +84,7 @@ export class CrossEraSDK {
     validateNetwork(network);
 
     try {
-      const response = await this.apiClient.getClient(network).post('/api/submit', {
+      const response = await this.apiClient.getClient(network).post('/submit', {
         transaction_hash: transactionHash,
       });
 
