@@ -8,7 +8,7 @@ async function testSDKBatchProcessing() {
   const sdk = new CrossEraSDK();
 
   // Test transaction hash
-  const testTxHash = '0x253bd1b184693e558a20021c58fb3acb37af7ce1cbbdff9df0cc6f5823f70a95';
+  const testTxHash = '0x8e16c62d38e38dbc9464a2ca7e8b9d3069fb910254112bde710cc6cede5338bf';
 
   try {
     // Step 1: Submit transaction for batch processing

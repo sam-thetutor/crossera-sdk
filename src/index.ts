@@ -157,10 +157,19 @@ export class CrossEraSDK {
       }
 
       const response = await this.apiClient.submitForProcessing(network, requestData);
+      const data = response.data.data;
 
+      // Map API response fields to SDK format for successful submissions
       return {
-        ...response.data.data,
-        network,
+        success: response.data.success,
+        transactionHash: data.transaction_hash || data.transactionHash,
+        appId: data.app_id || data.appId || '',
+        userAddress: data.user_address || data.userAddress || '',
+        status: data.status || 'pending',
+        submittedAt: data.submitted_at || data.submittedAt || new Date().toISOString(),
+        estimatedProcessingTime: data.estimated_processing_time || data.estimatedProcessingTime || '24 hours',
+        id: data.id || 0,
+        network
       };
     } catch (error: any) {
       // Handle 409 conflict gracefully - transaction already submitted
