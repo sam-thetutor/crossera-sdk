@@ -1,8 +1,10 @@
-import { CrossEraSDK } from './dist/index.esm.js';
+import { CrossEraSDK } from 'crossera-sdk';
 
 async function testSDKBatchProcessing() {
   console.log('🧪 Testing SDK Batch Processing');
   console.log('================================\n');
+  console.log('📦 Using: crossera-sdk@1.0.7 (Latest NPM Package)');
+  console.log('');
 
   // Initialize SDK
   const sdk = new CrossEraSDK();
