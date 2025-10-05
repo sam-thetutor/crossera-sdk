@@ -167,9 +167,17 @@ export class CrossEraSDK {
       if (error.status === 409 || error.message.includes('already submitted')) {
         // Return the conflict data if available
         if (error.response?.data?.data) {
+          const data = error.response.data.data;
           return {
-            ...error.response.data.data,
-            network,
+            success: false,
+            transactionHash: data.transaction_hash || data.transactionHash || transactionHash,
+            appId: data.app_id || data.appId || '',
+            userAddress: data.user_address || data.userAddress || '',
+            status: data.status || 'pending',
+            submittedAt: data.submitted_at || data.submittedAt || new Date().toISOString(),
+            estimatedProcessingTime: '24 hours',
+            id: data.id || 0,
+            network
           };
         }
         // Otherwise return a default response indicating it's already submitted
@@ -216,8 +224,26 @@ export class CrossEraSDK {
 
     try {
       const response = await this.apiClient.getTransactionStatus(network, transactionHash);
+      const data = response.data.data;
 
-      return response.data.data;
+      // Map API response fields to SDK format
+      return {
+        transactionHash: data.transaction_hash || data.transactionHash,
+        appId: data.app_id || data.appId,
+        userAddress: data.user_address || data.userAddress,
+        status: data.status,
+        submittedAt: data.submitted_at || data.submittedAt,
+        processedAt: data.processed_at || data.processedAt,
+        retryCount: data.retry_count !== undefined ? data.retry_count : data.retryCount,
+        maxRetries: data.max_retries !== undefined ? data.max_retries : data.maxRetries,
+        errorMessage: data.error_message || data.errorMessage,
+        batchInfo: data.batch_info ? {
+          id: data.batch_info.id,
+          startedAt: data.batch_info.started_at || data.batch_info.startedAt,
+          completedAt: data.batch_info.completed_at || data.batch_info.completedAt,
+          status: data.batch_info.status
+        } : data.batchInfo
+      };
     } catch (error: any) {
       throw new Error(`Failed to get transaction status ${transactionHash} on ${network}: ${error.message}`);
     }
