@@ -45,6 +45,8 @@ export class CrossEraAPIClient {
         return `Resource not found on ${network}`;
       } else if (status === 400) {
         return data?.error || `Bad request to ${network}`;
+      } else if (status === 409) {
+        return `Transaction already submitted for batch processing`;
       } else if (status === 500) {
         return `Internal server error on ${network}`;
       } else {

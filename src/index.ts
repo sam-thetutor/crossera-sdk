@@ -163,6 +163,29 @@ export class CrossEraSDK {
         network,
       };
     } catch (error: any) {
+      // Handle 409 conflict gracefully - transaction already submitted
+      if (error.status === 409 || error.message.includes('already submitted')) {
+        // Return the conflict data if available
+        if (error.response?.data?.data) {
+          return {
+            ...error.response.data.data,
+            network,
+          };
+        }
+        // Otherwise return a default response indicating it's already submitted
+        return {
+          success: false,
+          transactionHash,
+          appId: '',
+          userAddress: '',
+          status: 'pending' as const,
+          submittedAt: new Date().toISOString(),
+          estimatedProcessingTime: '24 hours',
+          id: 0,
+          network
+        };
+      }
+      
       throw new Error(`Failed to submit transaction for batch processing ${transactionHash} on ${network}: ${error.message}`);
     }
   }

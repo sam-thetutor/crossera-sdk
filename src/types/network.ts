@@ -8,12 +8,12 @@ export interface NetworkConfig {
 
 export const NETWORK_CONFIGS: Record<Network, NetworkConfig> = {
   testnet: {
-    baseUrl: 'https://crossera.xyz/api',
+    baseUrl: 'https://www.crossera.xyz',
     chainId: 4157,
     name: 'CrossFi Testnet'
   },
   mainnet: {
-    baseUrl: 'https://crossera.xyz/api',
+    baseUrl: 'https://www.crossera.xyz',
     chainId: 4158,
     name: 'CrossFi Mainnet'
   }
