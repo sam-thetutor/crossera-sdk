@@ -29,13 +29,29 @@ async function basicUsage() {
     const testnetConfig = sdk.getNetworkConfig('testnet');
     console.log('Testnet config:', testnetConfig);
 
-    // Submit transaction (uncomment to test)
-    // console.log('\n=== Submitting Transaction ===');
+    // Submit transaction for immediate processing (uncomment to test)
+    // console.log('\n=== Submitting Transaction (Immediate) ===');
     // const result = await sdk.submitTransaction({
     //   transactionHash,
     //   network: 'testnet'
     // });
     // console.log('Transaction result:', result);
+
+    // Submit transaction for batch processing (uncomment to test)
+    // console.log('\n=== Submitting Transaction (Batch Processing) ===');
+    // const batchResult = await sdk.submitForProcessing({
+    //   transactionHash,
+    //   network: 'mainnet'
+    // });
+    // console.log('Batch processing result:', batchResult);
+
+    // Check transaction status (uncomment to test)
+    // console.log('\n=== Checking Transaction Status ===');
+    // const status = await sdk.getTransactionStatus({
+    //   transactionHash,
+    //   network: 'mainnet'
+    // });
+    // console.log('Transaction status:', status);
 
   } catch (error) {
     console.error('Error:', error.message);

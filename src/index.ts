@@ -2,8 +2,12 @@ import {
   Network, 
   GetAppIdParams, 
   SubmitTransactionParams, 
+  SubmitForProcessingParams,
+  GetTransactionStatusParams,
   SDKConfig, 
   TransactionResult, 
+  BatchTransactionResult,
+  TransactionStatus,
   NetworkConfig 
 } from './types';
 import { validateAddress, validateTransactionHash, validateNetwork } from './utils/validation';
@@ -114,6 +118,89 @@ export class CrossEraSDK {
   }
 
   /**
+   * Submit transaction for batch processing
+   * @param params - Parameters object
+   * @param params.transactionHash - Transaction hash to submit for batch processing
+   * @param params.network - Network to submit to ('testnet' or 'mainnet')
+   * @param params.appId - Optional app ID (will be extracted from transaction if not provided)
+   * @param params.userAddress - Optional user address (will be extracted from transaction if not provided)
+   * @returns Promise<BatchTransactionResult> - Batch processing result
+   * 
+   * @example
+   * ```typescript
+   * const sdk = new CrossEraSDK();
+   * const result = await sdk.submitForProcessing({
+   *   transactionHash: '0x753b2ea96cdf8dd1b5a822f4f40ea0678c3516b44946a78ae26863dc1425d468',
+   *   network: 'mainnet'
+   * });
+   * console.log('Batch processing result:', result);
+   * ```
+   */
+  async submitForProcessing(params: SubmitForProcessingParams): Promise<BatchTransactionResult> {
+    const { transactionHash, network, appId, userAddress } = params;
+
+    // Validate parameters
+    validateTransactionHash(transactionHash);
+    validateNetwork(network);
+
+    try {
+      const requestData: any = {
+        transaction_hash: transactionHash,
+      };
+
+      // Add optional parameters if provided
+      if (appId) {
+        requestData.app_id = appId;
+      }
+      if (userAddress) {
+        requestData.user_address = userAddress;
+      }
+
+      const response = await this.apiClient.submitForProcessing(network, requestData);
+
+      return {
+        ...response.data.data,
+        network,
+      };
+    } catch (error: any) {
+      throw new Error(`Failed to submit transaction for batch processing ${transactionHash} on ${network}: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get transaction processing status
+   * @param params - Parameters object
+   * @param params.transactionHash - Transaction hash to check status for
+   * @param params.network - Network to check status on ('testnet' or 'mainnet')
+   * @returns Promise<TransactionStatus> - Transaction processing status
+   * 
+   * @example
+   * ```typescript
+   * const sdk = new CrossEraSDK();
+   * const status = await sdk.getTransactionStatus({
+   *   transactionHash: '0x753b2ea96cdf8dd1b5a822f4f40ea0678c3516b44946a78ae26863dc1425d468',
+   *   network: 'mainnet'
+   * });
+   * console.log('Transaction status:', status);
+   * ```
+   */
+  async getTransactionStatus(params: GetTransactionStatusParams): Promise<TransactionStatus> {
+    const { transactionHash, network } = params;
+
+    // Validate parameters
+    validateTransactionHash(transactionHash);
+    validateNetwork(network);
+
+    try {
+      const response = await this.apiClient.getTransactionStatus(network, transactionHash);
+
+      return response.data.data;
+    } catch (error: any) {
+      throw new Error(`Failed to get transaction status ${transactionHash} on ${network}: ${error.message}`);
+    }
+  }
+
+  /**
    * List available networks
    * @returns Network[] - Available networks
    * 
@@ -133,8 +220,12 @@ export type {
   Network,
   GetAppIdParams,
   SubmitTransactionParams,
+  SubmitForProcessingParams,
+  GetTransactionStatusParams,
   SDKConfig,
   TransactionResult,
+  BatchTransactionResult,
+  TransactionStatus,
   NetworkConfig,
   CampaignMetric,
   APIError,

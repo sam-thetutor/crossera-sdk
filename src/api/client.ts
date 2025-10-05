@@ -66,4 +66,20 @@ export class CrossEraAPIClient {
     }
     return client;
   }
+
+  /**
+   * Submit transaction for batch processing
+   */
+  async submitForProcessing(network: Network, data: any): Promise<any> {
+    const client = this.getClient(network);
+    return client.post('/api/sdk/submit', data);
+  }
+
+  /**
+   * Get transaction processing status
+   */
+  async getTransactionStatus(network: Network, txHash: string): Promise<any> {
+    const client = this.getClient(network);
+    return client.get(`/api/sdk/status/${txHash}`);
+  }
 }
