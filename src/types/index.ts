@@ -52,7 +52,7 @@ export interface BatchTransactionResult {
   status: 'pending' | 'processing' | 'completed' | 'failed';
   submittedAt: string;
   estimatedProcessingTime: string;
-  id: number; // Database ID
+  id: string; // Database ID (UUID)
   network: Network;
 }
 
@@ -60,14 +60,17 @@ export interface TransactionStatus {
   transactionHash: string;
   appId: string;
   userAddress: string;
+  network: string;
   status: 'pending' | 'processing' | 'completed' | 'failed' | 'skipped';
   submittedAt: string;
   processedAt?: string;
+  processTxHash?: string; // On-chain process transaction hash
   retryCount: number;
   maxRetries: number;
   errorMessage?: string;
+  estimatedProcessingTime?: string; // For pending transactions
   batchInfo?: {
-    id: number;
+    id: string; // UUID
     startedAt: string;
     completedAt?: string;
     status: string;

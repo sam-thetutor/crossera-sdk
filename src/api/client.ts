@@ -82,6 +82,6 @@ export class CrossEraAPIClient {
    */
   async getTransactionStatus(network: Network, txHash: string): Promise<any> {
     const client = this.getClient(network);
-    return client.get(`/api/sdk/status/${txHash}`);
+    return client.get(`/api/sdk/status/${txHash}?network=${network}`);
   }
 }

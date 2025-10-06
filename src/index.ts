@@ -145,15 +145,16 @@ export class CrossEraSDK {
 
     try {
       const requestData: any = {
-        transaction_hash: transactionHash,
+        transactionHash: transactionHash,
+        network: network
       };
 
       // Add optional parameters if provided
       if (appId) {
-        requestData.app_id = appId;
+        requestData.appId = appId;
       }
       if (userAddress) {
-        requestData.user_address = userAddress;
+        requestData.userAddress = userAddress;
       }
 
       const response = await this.apiClient.submitForProcessing(network, requestData);
@@ -198,7 +199,7 @@ export class CrossEraSDK {
           status: 'pending' as const,
           submittedAt: new Date().toISOString(),
           estimatedProcessingTime: '24 hours',
-          id: 0,
+          id: '',
           network
         };
       }
@@ -240,12 +241,15 @@ export class CrossEraSDK {
         transactionHash: data.transaction_hash || data.transactionHash,
         appId: data.app_id || data.appId,
         userAddress: data.user_address || data.userAddress,
+        network: data.network || network,
         status: data.status,
         submittedAt: data.submitted_at || data.submittedAt,
         processedAt: data.processed_at || data.processedAt,
-        retryCount: data.retry_count !== undefined ? data.retry_count : data.retryCount,
-        maxRetries: data.max_retries !== undefined ? data.max_retries : data.maxRetries,
+        processTxHash: data.process_tx_hash || data.processTxHash,
+        retryCount: data.retry_count !== undefined ? data.retry_count : data.retryCount || 0,
+        maxRetries: data.max_retries !== undefined ? data.max_retries : data.maxRetries || 3,
         errorMessage: data.error_message || data.errorMessage,
+        estimatedProcessingTime: data.estimated_processing_time || data.estimatedProcessingTime,
         batchInfo: data.batch_info ? {
           id: data.batch_info.id,
           startedAt: data.batch_info.started_at || data.batch_info.startedAt,
